@@ -1,6 +1,6 @@
 <template>
   <div class="bottom-menu">
-    <CheckButton class="select-all" @checkBtnClick="checkBtnClick" :checked="isSelectAll"></CheckButton>
+    <CheckButton class="selectAll" @checkBtnClick="checkBtnClick" :checked="isSelectAll"></CheckButton>
     <span>全选</span>
     <span class="total-price">合计: ¥{{totalPrice}}</span>
     <span class="buy-product" @click="payOrlogin">支付</span>
@@ -11,23 +11,40 @@
   import CheckButton from './CheckButton'
   export default {
     name: "CartBottomBar",
+    data(){
+      return {
+        totalPrice : 0.00
+      }
+    },
     components: {
       CheckButton
     },
-    computed: {
-      totalPrice() {
+
+    activated() {
+      if(JSON.parse(localStorage.getItem("userSubMes"))) {
         const cartList = this.$store.getters.cartList;
-        return cartList.filter(item => {
+        this.totalPrice=cartList.filter(item => {
           return item.checked
         }).reduce((preValue, item) => {
           return preValue + item.count * item.price
         }, 0).toFixed(2)
-      },
-      isSelectAll: function () {
-        return this.$store.getters.cartList.find(item => item.checked === false) === undefined;
+      } else {
+
+        this.totalPrice = 0.00
       }
+
+    },
+    computed: {
+      isSelectAll: function () {
+          //判断是否全部选中
+          return this.$store.getters.cartList.find(item => item.checked === false) === undefined;
+      }
+
+
     },
     methods: {
+
+      //全选按钮的点击
       checkBtnClick: function () {
         // 1.判断是否有未选中的按钮
         let isSelectAll = this.$store.getters.cartList.find(item => !item.checked);
@@ -69,7 +86,7 @@
     padding-left: 35px;
     box-sizing: border-box;
   }
-  .bottom-menu .select-all {
+  .bottom-menu .selectAll {
     position: absolute;
     line-height: 0;
     left: 12px;

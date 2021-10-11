@@ -31,7 +31,7 @@
     <list-view :list-data="orderList" class="order-list"></list-view>
     <list-view :list-data="serviceList" class="service-list"></list-view>
 
-      <div class="cancle" @click="cancleLogin">退出登录</div>
+    <div class="cancle" @click="cancleLogin">退出登录</div>
 
   </div>
 </template>
@@ -87,7 +87,6 @@
             localStorage.clear();
             this.nickName = "登录/注册"
             Toast.success("退出成功")
-
           })
           .catch(() => {
             // on cancel
@@ -145,5 +144,11 @@
   .order-list, .service-list {
     margin-top: 12px;
   }
-
+  .cancle {
+    text-align: center;
+    border-radius: 5%;
+    background-color: #ffffff;
+    padding: 5px;
+    font-size: 16px;
+  }
 </style>
